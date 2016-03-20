@@ -8,14 +8,14 @@
 ## 4.get the inverse matrix
 
 makeCacheMatrix <- function(x = matrix()) {
-        inv <- NULL
+        invm <- NULL
         set <- function(y) {
                 x <<- y
-                inv <<- NULL
+                invm <<- NULL
         }
         get <- function() x
-        setInverse <- function(inverse) inv <<- inverse
-        getInverse <- function() inv
+        setInverse <- function(inverse) invm <<- inverse
+        getInverse <- function() invm
         list(set = set,
              get = get,
              setInverse = setInverse,
@@ -30,13 +30,16 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-        inv <- x$getInverse()
-        if (!is.null(inv)) {
+        invm <- x$getInverse()
+		##check if inverse matrix is already computed if so return the cached inverse matrix
+        if (!is.null(invm)) {
                 message("getting cached data")
                 return(inv)
         }
-        mat <- x$get()
-        inv <- solve(mat, ...)
-        x$setInverse(inv)
-        inv
+        rmat <- x$get()
+		## compute the inverse matrix
+        invm <- solve(rmat, ...)
+		## setting the inverse matrix to the list
+        x$setInverse(invm)
+        invm
 }
